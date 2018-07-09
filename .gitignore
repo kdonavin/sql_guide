@@ -1,0 +1,14 @@
+# directories
+Examples/
+
+# files
+Icon?
+NoSQL.md
+PostgreSQL.md
+snowflake.md
+TEMPLATE_csv_to_postgresql.py
+
+# file-types
+*.swp
+*.pdf
+*.png
