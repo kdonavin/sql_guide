@@ -172,6 +172,7 @@ GROUP BY price;
 * `DATEDIFF(<date_units>, <date1>, <date2>)`: Calculate the difference in `date_units` between `date1` and `date2`.
 * `DATE_PART()` - Filter a specific part of date. E.g., `DATE_PART('year', <date_col>)` extracts the year from `date_col`.
 * `TO_DATE()` - converts string literal to date format. For example, `SELECT TO_DATE(<datetime>)`, or `SELECT TO_DATE(<string> , 'MM/DD/YYYY')` where `string` is in the given format. 
+* `INTERVAL <value>` - Specifies a time interval. E.g., `duration*interval '1 day'` would convert `duration` integer value into a that number of days.    
 
 ### String Functions
 
@@ -215,8 +216,13 @@ You can make a subquery to substitute for table in a `FROM` statement. For examp
 
 ## Operators
 
-* `||` - concatenate strings. E.g., `SELECT 'Ron Weasley has ' || COUNT(*) || ' pets'  FROM pets WHERE owner = 'Ron Weasley';`
-* `INTERVAL <value>` - Specifies a time interval. E.g., `duration*interval '1 day'` would convert `duration` integer value into a that number of days.
+* `||`: concatenate strings. E.g., `SELECT 'Ron Weasley has ' || COUNT(*) || ' pets'  FROM pets WHERE owner = 'Ron Weasley';`
+* `::`: Cast `field` to `fmt`. E.g., `SELECT dollars::FLOAT`.
+* `->>`: Access fields in JSON data. E.g., 
+```sql
+SELECT * FROM email_events
+WHERE sendgrid_data->>'event' = 'email_verification_failure'
+```
 
 ## The `CASE` Expression
 
