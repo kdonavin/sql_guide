@@ -5,6 +5,8 @@ The following notes are *A programming language designed to manage data stored i
 ## Table of Contents
 
 * [Advantages and Disadvantages](#advantages-and-disadvantages)
+* [Data Types](#data-types)
+* [Vocab](#vocab)
 * [SQL Statements](#sql-statements)
     * [The `SELECT` Statement](#the-select-statement)
     * [Filter Statements](#filter-statements)
@@ -24,10 +26,8 @@ The following notes are *A programming language designed to manage data stored i
 * [Database Adminstration](#database-administration)
     * [Admin Statements](#admin-statements)
     * [Schema](#schema)
-* [Syntax](#syntax)
 * [Temp. Tables](#temp-tables)
-* [Data Types](#data-types)
-* [Vocab](#vocab)
+
 
 ## Advantages and Disadvantages
 
@@ -38,7 +38,7 @@ Structured databases are popular for their advantages, which may also be disadva
 
 ## SQL Statements
 
-SQL comes in many 'flavors', but the following statements are generally universal with some exceptions. Some statements (e.g., `COPY`) are more specific to flavor and should be Googled.
+SQL comes in many 'flavors', but the following statements are generally universal with some exceptions. Some statements (e.g., `COPY`) are more specific to flavor and should be Googled. SQL *statements* are made of *clauses*, written in CAPITALS by convention (not syntactically required), have *parameters* in between `()`, and end in `;`. 
 
 ### The `SELECT` Statement
 
@@ -47,9 +47,9 @@ The most common query. `SELECT` is used to select data from a table. For example
 SELECT var1_name, var2_name FROM table_name;
 ```
 
-* `*` - `SELECT` all table columns). `SELECT` always returns a *new* table called the *result set*.
-* `DISTINCT` - a query returning unique values in a result set. Example: `SELECT DISTINCT genre FROM movies;`
-* `AS` - rename column names using a *alias*. Example `SELECT name AS "Album Name", year FROM albums;`. Depending on the flavor of SQL, the alias may need to be in *double* quotes, and `AS` might be unnecessary (e.g., PostgreSQL)
+* `*`: `SELECT` all table columns). `SELECT` always returns a *new* table called the *result set*.
+* `DISTINCT`: a query returning unique values in a result set. Example: `SELECT DISTINCT genre FROM movies;`
+* `AS`: rename column names using a *alias*. Example `SELECT name AS "Album Name", year FROM albums;`. Depending on the flavor of SQL, the alias may need to be in *double* quotes, and `AS` might be unnecessary (e.g., PostgreSQL)
 * `UNION`: Combine results from two sub-query result sets, with the same column name, type and ordering. By default, duplicate rows are removed. This may be overridden with a subsequent `ALL` statement. For example: 
 
 ```sql 
@@ -62,14 +62,14 @@ Math may be conducted in line for variable in the select statement. For example,
 
 ### Filter Statements
 
-* `GROUP BY` - Clause that aggregates rows of a column name that have the same value. It is only used with other aggregate functions. Usually, the columns you are grouping by are also in the `SELECT` statement. For Example:
+* `GROUP BY`: Clause that aggregates rows of a column name that have the same value. It is only used with other aggregate functions. Usually, the columns you are grouping by are also in the `SELECT` statement. For Example:
 ```sql
 SELECT price, type, COUNT(*) 
 FROM fake_apps 
 GROUP BY price, type;
 ```
 Note, that order does not matter for multiple `GROUP BY` columns; the statement returns all permutations, regardless. Further note that `GROUP BY 1` is equivalent, that groups by the 1<sup>st</sup> column regardless of what it is called.
-* `HAVING` - A `WHERE` clause for aggregate functions. For Example:
+* `HAVING`: A `WHERE` clause for aggregate functions. For Example:
 ```sql
 SELECT
     name AS 'Artist',
@@ -81,38 +81,38 @@ GROUP BY
 HAVING
     SUM(albums) > 2;
 ```
-* `ORDER BY` - order the results of a query, either alphabetically or numerically. Example: 
+* `ORDER BY`: order the results of a query, either alphabetically or numerically. Example: 
 ```sql
 SELECT * 
 FROM movies 
 ORDER BY imdb_rating DESC;
 ```
-    * `DESC` - modifier for `ORDER BY` in descending order. See example above. 
-    * `ASC` - modifier for `ORDER BY` in ascending order (i.e., `1,2,3,...` or `A,B,C...`).
-* `LIMIT` - specifies the maximum number of rows to return. Example: `SELECT * FROM movies ORDER BY imdb_rating DESC LIMIT 3`
-* `WHERE` - filters row(s) based on following *conditional* in order to `SELECT`, `SET`, etc. See `UPDATE` example.
-    * `AND` - combines `WHERE` conditions. Both conditions must be true to be included in the result set. EXAMPLE: `SELECT * FROM movies WHERE name BETWEEN 1998 AND 2000 AND genre = 'comedy'` 
-    * `BETWEEN` - filter results between two values. Example: `SELECT * FROM movies WHERE name BETWEEN 'A' AND 'J'` filters movies with a name starting with 'A' up to, but not including 'J'.
-    * `IN` - Specify multiple values for the `WHERE` clause. For example: `WHERE name IN (name_1, name_2, ...)`
-    * `LIKE` - Pattern recognition for `WHERE` filtering. Example: `SELECT * FROM movies WHERE name LIKE "Se_en";` returns moves with names `Se7en` *and* `Seven`. `_`, for a single letter, and `%`, for zero or more letters are both wildcards.
-    * `OR` - combines `WHERE` conditions similarly to `AND`. However, only one condition must be true to be included in the result set. 
+    * `DESC`: modifier for `ORDER BY` in descending order. See example above. 
+    * `ASC`: modifier for `ORDER BY` in ascending order (i.e., `1,2,3,...` or `A,B,C...`).
+* `LIMIT`: specifies the maximum number of rows to return. Example: `SELECT * FROM movies ORDER BY imdb_rating DESC LIMIT 3`
+* `WHERE`: filters row(s) based on following *conditional* in order to `SELECT`, `SET`, etc. See `UPDATE` example.
+    * `AND`: combines `WHERE` conditions. Both conditions must be true to be included in the result set. EXAMPLE: `SELECT * FROM movies WHERE name BETWEEN 1998 AND 2000 AND genre = 'comedy'` 
+    * `BETWEEN`: filter results between two values. Example: `SELECT * FROM movies WHERE name BETWEEN 'A' AND 'J'` filters movies with a name starting with 'A' up to, but not including 'J'.
+    * `IN`: Specify multiple values for the `WHERE` clause. For example: `WHERE name IN (name_1, name_2, ...)`
+    * `LIKE`: Pattern recognition for `WHERE` filtering. Example: `SELECT * FROM movies WHERE name LIKE "Se_en";` returns moves with names `Se7en` *and* `Seven`. `_`, for a single letter, and `%`, for zero or more letters are both wildcards.
+    * `OR`: combines `WHERE` conditions similarly to `AND`. However, only one condition must be true to be included in the result set. 
 Note that aggregators are not allowed in the `WHERE` statement because `WHERE` occurs before `SELECT` statement and aggregators.
 
 ### Update Statements
 
 Update statements change or remove information from SQL databases.
 
-* `ALTER TABLE` - Add new column to a `TABLE` object. Example: `ALTER TABLE table_name ADD COLUMN miley_cirus_fan BIT`.
-* `DELETE FROM` - Remove row(s) of data. Example: `DELETE FROM celebs WHERE twitter_handle IS NULL`;
-* `INSERT INTO` - Add row to an existing relation. Example: 
+* `ALTER TABLE`: Add new column to a `TABLE` object. Example: `ALTER TABLE table_name ADD COLUMN miley_cirus_fan BIT`.
+* `DELETE FROM`: Remove row(s) of data. Example: `DELETE FROM celebs WHERE twitter_handle IS NULL`;
+* `INSERT INTO`: Add row to an existing relation. Example: 
 ```sql
 INSERT INTO
     celebs [(id, name, age)] #Specify if non-inserting row values for all columns
 VALUES 
     (1, 'Justin Bieber' , 21);
 ```
-* `SET` - indicates a column to edit. See `UPDATE` example.
-* `UPDATE` - used to edit a data row in a relation, often in conjunction with `SET` and `WHERE`. Example: 
+* `SET`: indicates a column to edit. See `UPDATE` example.
+* `UPDATE`: used to edit a data row in a relation, often in conjunction with `SET` and `WHERE`. Example: 
 ```sql
 UPDATE celebs 
 SET age = 22
@@ -123,7 +123,7 @@ WHERE id = 1;
 
 Tables are related to each other using *primary keys* and *foreign keys*. Primary keys are a unique identifier for rows in a table. Foreign keys are the unique identifier in one table for the rows in a *another* table. 
 
-* `JOIN` & `ON` - Joins two tables into a single table set based `ON` a primary & foreign key pair. This command is called an *inner* command without `LEFT` or `RIGHT`, meaning only rows that exist in *both* tables are returned (i.e., `JOIN` and `INNER JOIN` are equivalent). Example: 
+* `JOIN` & `ON`: Joins two tables into a single table set based `ON` a primary & foreign key pair. This command is called an *inner* command without `LEFT` or `RIGHT`, meaning only rows that exist in *both* tables are returned (i.e., `JOIN` and `INNER JOIN` are equivalent). Example: 
 ```sql
 SELECT 
     albums.id, 
@@ -136,8 +136,8 @@ JOIN artists ON
     albums.artist_id = artists.id AND
     artists.genre != 'pop'; #do not join pop artists
 ```
-* `LEFT` and `RIGHT JOIN` - An outer join command includes `NULL` foreign keys for the left and right table respectively. All rows in the "left" table are returned, regardless of meeting the *join condition*. Example: `...FROM albums LEFT JOIN artists ON albums.artist_id = artists.id;` includes *all* rows from `albums`, regardless of whether `albums.artist_id` contains a value. 
-* `FULL JOIN` - An outer join including all rows for each table.
+* `LEFT` and `RIGHT JOIN`: An outer join command includes `NULL` foreign keys for the left and right table respectively. All rows in the "left" table are returned, regardless of meeting the *join condition*. Example: `...FROM albums LEFT JOIN artists ON albums.artist_id = artists.id;` includes *all* rows from `albums`, regardless of whether `albums.artist_id` contains a value. 
+* `FULL JOIN`: An outer join including all rows for each table.
 
 ![Join Reference](joins_reference.png)
 
@@ -145,34 +145,34 @@ JOIN artists ON
 
 ## The `CREATE` & `DROP` Statements
 
-* `DROP` - delete a database or table
-* `CREATE` - create a database
-    * `CREATE TABLE` - create a database `TABLE`. Example: `CREATE TABLE tab_name(id INTEGER PRIMARY KEY, name TEXT);`
-    * `PRIMARY KEY` - tell SQL which column is the unique identifier of a row. SQL provides insurance that the `PRIMARY KEY` is unique for each row and that none of the values are `NULL`.
+* `DROP`: delete a database or table
+* `CREATE`: create a database
+    * `CREATE TABLE`: create a database `TABLE`. Example: `CREATE TABLE tab_name(id INTEGER PRIMARY KEY, name TEXT);`
+    * `PRIMARY KEY`: tell SQL which column is the unique identifier of a row. SQL provides insurance that the `PRIMARY KEY` is unique for each row and that none of the values are `NULL`.
 
 ## SQL Functions
 
 ### Aggregate Functions
 
-* `AVG()` - Aggregate function that returns the average value of a column, given as a parameter. Example: `SELECT AVG(price) FROM fake_apps;`.
-* `COUNT()` - function that counts the rows of a result set. Example: `SELECT COUNT(*) FROM movies;` returns the number of movies in the database.
-* `LENGTH()` - returns the length of text columns. For example: `SELECT name, LENGTH(name) FROM pets;` returns the name and length of name of pets (might be `LEN()` in some SQL implementations)
-* `MAX()` - Aggregate function that returns the maximum value for a column, given as a parameter. Example: `SELECT MAX(downloads) FROM fake_apps;`
-* `MIN()` - Aggregate function that returns the maximum value for a column, given as a parameter. Example: `SELECT MIN(price) FROM fake_apps;`
-* `ROUND()` - Aggregate function that rounds a column to a specified number of digits, both given as parameters. Example: 
+* `AVG()`: Aggregate function that returns the average value of a column, given as a parameter. Example: `SELECT AVG(price) FROM fake_apps;`.
+* `COUNT()`: function that counts the rows of a result set. Example: `SELECT COUNT(*) FROM movies;` returns the number of movies in the database.
+* `LENGTH()`: returns the length of text columns. For example: `SELECT name, LENGTH(name) FROM pets;` returns the name and length of name of pets (might be `LEN()` in some SQL implementations)
+* `MAX()`: Aggregate function that returns the maximum value for a column, given as a parameter. Example: `SELECT MAX(downloads) FROM fake_apps;`
+* `MIN()`: Aggregate function that returns the maximum value for a column, given as a parameter. Example: `SELECT MIN(price) FROM fake_apps;`
+* `ROUND()`: Aggregate function that rounds a column to a specified number of digits, both given as parameters. Example: 
 ```sql
 SELECT price, ROUND(AVG(downloads), 2)
 FROM fake_apps
 GROUP BY price;
 ```
-* `SUM()` - Aggregate function that adds the `INTEGER` or `REAL` values of a column, given as a parameter. Example: `SELECT SUM(downloads) FROM fake_apps;`
+* `SUM()`: Aggregate function that adds the `INTEGER` or `REAL` values of a column, given as a parameter. Example: `SELECT SUM(downloads) FROM fake_apps;`
 
 ### Date Functions
 
 * `DATEDIFF(<date_units>, <date1>, <date2>)`: Calculate the difference in `date_units` between `date1` and `date2`.
-* `DATE_PART()` - Filter a specific part of date. E.g., `DATE_PART('year', <date_col>)` extracts the year from `date_col`.
-* `TO_DATE()` - converts string literal to date format. For example, `SELECT TO_DATE(<datetime>)`, or `SELECT TO_DATE(<string> , 'MM/DD/YYYY')` where `string` is in the given format. 
-* `INTERVAL <value>` - Specifies a time interval. E.g., `duration*interval '1 day'` would convert `duration` integer value into a that number of days.    
+* `DATE_PART()`: Filter a specific part of date. E.g., `DATE_PART('year', <date_col>)` extracts the year from `date_col`.
+* `TO_DATE()`: converts string literal to date format. For example, `SELECT TO_DATE(<datetime>)`, or `SELECT TO_DATE(<string> , 'MM/DD/YYYY')` where `string` is in the given format. 
+* `INTERVAL <value>`: Specifies a time interval. E.g., `duration*interval '1 day'` would convert `duration` integer value into a that number of days.    
 
 ### String Functions
 
@@ -196,9 +196,9 @@ More information on window functions may be found here: [Window Functions](https
 
 ### Other Functions
 
-* `CAST()` - cast a column into a new data type. E.g., `CAST(column_name AS INTEGER)`
-* `COALESCE()` - exchanges null values for a user-defined value. E.g., `COALESCE(col_name, 0)` turns all null values in `col_name` into `0`. 
-* `EXISTS(<query>)` - Returns a boolean value regarding whether the input `<query>` exists.
+* `CAST(<col_name> AS <type>)`: Cast a column into a new data type.
+* `COALESCE()`: exchanges null values for a user-defined value. E.g., `COALESCE(col_name, 0)` turns all null values in `col_name` into `0`. 
+* `EXISTS(<query>)`: Returns a boolean value regarding whether the input `<query>` exists.
 
 ## Subqueries
 
@@ -223,6 +223,8 @@ You can make a subquery to substitute for table in a `FROM` statement. For examp
 SELECT * FROM email_events
 WHERE sendgrid_data->>'event' = 'email_verification_failure'
 ```
+* `--`: comments
+* `/* ... */`: Multi-line comments
 
 ## The `CASE` Expression
 
@@ -281,11 +283,6 @@ DELIMITER ',' CSV
 HEADER;
 ```
 
-## Syntax
-
-SQL *statements* are made of *clauses*, written in CAPITALS by convention (not syntactically required), and *parameters* in between `()`. SQL Statements end in `;`. For instance
-* **Comments** - Created with `--` or `/*`.
-
 ## Temp. Tables 
 
 Using `WITH` and `AS` statements, a temporary table may be created *for the current session*. For example:
@@ -317,28 +314,31 @@ A `.db` file may then be queried in a SQL environment.
 
 ## Data Types
 
-* `CHAR` - character
-* `DATE` - date
-* `ENUM` - values from a discrete set of options. E.g., `ENUM('android','iphone','other')`
-* `INTEGER` - integer.
-* `MONEY` - Dollar format
-* `TEXT` - string format. Note that this must be inserted into SQL with `'` and escaped with double `'`. E.g., `'String for O''Brian'`.
+* `CHAR`: character
+* `DATE`: date
+* `ENUM`: values from a discrete set of options. E.g., `ENUM('android','iphone','other')`
+* `INTEGER`: integer.
+* `MONEY`: Dollar format
+* `TEXT`: string format. Note that this must be inserted into SQL with `'` and escaped with double `'`. E.g., `'String for O''Brian'`.
 
 Note that variables may be cast to new formats with the `::` operator. For example, `SELECT '10'::INTEGER;`
 
 ## Vocab
 
-* **Child Table** - A table that references another's primary key, using a foreign key. E.g., a `sales_record` table, referencing a `customer` table with a foreign key. If updating a child table ever requires you to update the parent as well, then we have improper design. 
-* **Column** - a set of data values of a particular type.
-* **Cross-reference Table** - A table that links primary keys from two tables, when there are many-to-many relationships between them. E.g., student applicants to universities tables.
-* **Database Normalization** - A database design ideal: *All non-key columns should belong exclusively to the primary key*. 
-* **Extract, Transform, Load** - three database functions that are combined into one tool to pull data out of one database and place it into another database.
-* **Foreign Key** - A table column that contains *another* table's primary key. A foreign key *can* contain `NULL`.
-* **Parent Table** - A table that stores a primary key, referenced by a **child table**'s foreign key. E.g., a cities parent table, and a neighborhoods child table.
-* **Primary Key** - A table column that uniquely identifies a row from the table and cannot contain `NULL`. 
-* **Row** - a single record in a table
-* **Relationship** - A table primary key that is the connection between two or more tables.
-* **Relational database** - a database that organizes information into one or more tables. Saves space 
-* **Relational Database Management System (RDBMS)** - a program that lets you create, update, and administer a relational database. Most relational database management systems use SQL to access the database. Types: SQLite, MySQL, SQL Database
-* **Schema** - defines the structure of a table or a database
-* **Table (AKA Relation)** - a collection of data organized into rows and columns.
+This should be migrated to another vocabulary list.
+
+* **Child Table**: A table that references another's primary key, using a foreign key. E.g., a `sales_record` table, referencing a `customer` table with a foreign key. If updating a child table ever requires you to update the parent as well, then we have improper design. 
+* **Column**: a set of data values of a particular type.
+* **Cross-reference Table**: A table that links primary keys from two tables, when there are many-to-many relationships between them. E.g., student applicants to universities tables.
+* **Database Normalization**: A database design ideal: *All non-key columns should belong exclusively to the primary key*. 
+* **Extract, Transform, Load**: three database functions that are combined into one tool to pull data out of one database and place it into another database.
+* **Foreign Key**: A table column that contains *another* table's primary key. A foreign key *can* contain `NULL`.
+* **Parent Table**: A table that stores a primary key, referenced by a **child table**'s foreign key. E.g., a cities parent table, and a neighborhoods child table.
+* **Primary Key**: A table column that uniquely identifies a row from the table and cannot contain `NULL`. 
+* **Row**: a single record in a table
+* **Relationship**: A table primary key that is the connection between two or more tables.
+* **Relational database**: a database that organizes information into one or more tables. Saves space 
+* **Relational Database Management System (RDBMS)**: a program that lets you create, update, and administer a relational database. Most relational database management systems use SQL to access the database. Types: SQLite, MySQL, SQL Database
+* **Schema**: defines the structure of a table or a database
+* **Structured Data**:
+* **Table (AKA Relation)**: a collection of data organized into rows and columns.
