@@ -6,7 +6,6 @@ The following notes are *A programming language designed to manage data stored i
 
 * [Advantages and Disadvantages](#advantages-and-disadvantages)
 * [Data Types](#data-types)
-* [Vocab](#vocab)
 * [SQL Statements](#sql-statements)
     * [The `SELECT` Statement](#the-select-statement)
     * [Filter Statements](#filter-statements)
@@ -19,6 +18,7 @@ The following notes are *A programming language designed to manage data stored i
     * [Date Functions](#date-functions)
     * [Window Functions](#window-functions)
     * [Other Functions](#other-functions)
+    * [`CREATE` Functions](#create-functions)
 * [Subqueries](#subqueries)
 * [Order of Operations](#order-of-operations)
 * [Operators](#operators)
@@ -27,6 +27,7 @@ The following notes are *A programming language designed to manage data stored i
     * [Admin Statements](#admin-statements)
     * [Schema](#schema)
 * [Temp. Tables](#temp-tables)
+* [Vocab](#vocab)
 
 
 ## Advantages and Disadvantages
@@ -35,6 +36,18 @@ Structured databases are popular for their advantages, which may also be disadva
 
 * **Structured**: tables and schema are fixed and inflexible both an advantage (in terms of user IO) and disadvantage (if a change is needed, the data do not lend themselves to a table format)
 * **Centralized**: SQL is designed to be in a single server, rather than distributed across servers. Both an advantage (controlled) and a disadvantage (e.g., moving Asian customer table to Asia for efficiency).
+
+## Data Types
+
+* `CHAR`: fixed-length characters
+* `DATE`: date
+* `ENUM`: values from a discrete set of options. E.g., `ENUM('android','iphone','other')`
+* `INTEGER`: integer.
+* `MONEY`: Dollar format
+* `TEXT`: string format. Note that this must be inserted into SQL with `'` and escaped with double `'`. E.g., `'String for O''Brian'`.
+* `VARCHAR`: variable-length characters
+
+Note that variables may be cast to new formats with the `::` operator. For example, `SELECT '10'::INTEGER;`
 
 ## SQL Statements
 
@@ -199,6 +212,34 @@ More information on window functions may be found here: [Window Functions](https
 * `CAST(<col_name> AS <type>)`: Cast a column into a new data type.
 * `COALESCE()`: exchanges null values for a user-defined value. E.g., `COALESCE(col_name, 0)` turns all null values in `col_name` into `0`. 
 * `EXISTS(<query>)`: Returns a boolean value regarding whether the input `<query>` exists.
+* `TYPEOF(<col_name)`: Return data type of `col_name` 
+
+### `CREATE` Functions
+
+The user may define their own functions with `CREATE FUNCTION`. For (atleast) PostgreSQL flavor, there are 4 requirements
+
+1. Specify `RETURNS <data_type>`
+1. Specify language with `LANGUAGE SQL` (or `LANGUAGE plpgsql`)
+1. Use `SELECT` or `BEGIN RETURN ... END` to specify the output
+1. `$$` or `'` surrounds function logic
+
+Here is a syntactical example from `codewars.com`:
+
+```SQL
+CREATE FUNCTION agecalculator(date) RETURNS integer
+AS $$ BEGIN RETURN EXTRACT(YEAR FROM AGE($1))::int END$$
+LANGUAGE SQL;
+```
+
+Or equivalently
+
+```SQL
+CREATE FUNCTION agecalculator(date) RETURNS int
+AS 'SELECT EXTRACT(YEAR FROM AGE($1))::int;'
+LANGUAGE SQL
+```
+
+More information regarding creating custom functions with PostgreSQL's `CREATE FUNCTION` command found [here](https://www.postgresql.org/docs/9.5/static/sql-createfunction.html).
 
 ## Subqueries
 
@@ -311,17 +352,6 @@ sqlite3 database.db < create_database.sql
 ```
 
 A `.db` file may then be queried in a SQL environment.
-
-## Data Types
-
-* `CHAR`: character
-* `DATE`: date
-* `ENUM`: values from a discrete set of options. E.g., `ENUM('android','iphone','other')`
-* `INTEGER`: integer.
-* `MONEY`: Dollar format
-* `TEXT`: string format. Note that this must be inserted into SQL with `'` and escaped with double `'`. E.g., `'String for O''Brian'`.
-
-Note that variables may be cast to new formats with the `::` operator. For example, `SELECT '10'::INTEGER;`
 
 ## Vocab
 
