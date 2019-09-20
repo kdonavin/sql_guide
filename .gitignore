@@ -11,4 +11,4 @@ TEMPLATE_csv_to_postgresql.py
 # file-types
 *.swp
 *.pdf
-*.png
+
