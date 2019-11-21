@@ -3,7 +3,7 @@ SQL - Structured Query Language
 
 The following notes are *A programming language designed to manage data
 stored in relational databases.* SQL is a *declarative* language
-(vs. *imperative*). That is, one tells SQL what one wants, not how to
+(vs. *imperative*). That is, the user tells SQL what they want, not how to
 get it.
 
 Table of Contents
