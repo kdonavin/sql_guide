@@ -1,5 +1,5 @@
-SQL - Structured Query Language
-===============================
+A Guide to SQL - Structured Query Language
+==========================================
 
 The following notes are *A programming language designed to manage data
 stored in relational databases.* SQL is a *declarative* language
