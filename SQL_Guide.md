@@ -3,35 +3,37 @@ A Guide to SQL - Structured Query Language
 
 The following notes are *A programming language designed to manage data
 stored in relational databases.* SQL is a *declarative* language
-(vs. *imperative*). That is, the user tells SQL what they want, not how to
-get it.
+(vs. *imperative*). That is, the user tells SQL what they want, not how
+to get it.
 
 Table of Contents
 -----------------
 
 -   [Advantages and Disadvantages](#advantages-and-disadvantages)
 -   [Data Types](#data-types)
+-   [Order of Operations](#order-of-operations)
 -   [SQL Statements](#sql-statements)
-    -   [The `SELECT` Statement](#the-select-statement)
+    -   [The `SELECT` & `FROM`
+        Statements](#the-select-from-statements)
     -   [Filter Statements](#filter-statements)
     -   [Update Statements](#update-statements)
     -   [The `JOIN` Statements](#the-join-statements)
-    -   [The `CREATE` & `DROP` Statements](#the-create-drop-statements)
+-   [The `CREATE` & `DROP` Statements](#the-create-drop-statements)
 -   [SQL Functions](#sql-functions)
     -   [Aggregate Functions](#aggregate-functions)
-    -   [String Functions](#string-functions)
     -   [Date Functions](#date-functions)
+    -   [String Functions](#string-functions)
     -   [Window Functions](#window-functions)
+    -   [Array Functions](#array-functions)
     -   [Other Functions](#other-functions)
     -   [`CREATE` Functions](#create-functions)
--   [Subqueries](#subqueries)
--   [Order of Operations](#order-of-operations)
 -   [Operators](#operators)
 -   [The `CASE` Expression](#the-case-expression)
--   [Database Adminstration](#database-administration)
+-   [Database Administration](#database-administration)
     -   [Admin Statements](#admin-statements)
     -   [Schema](#schema)
--   [Temp. Tables](#temp-tables)
+    -   [Importing Data With `COPY`](#importing-data-with-copy)
+-   [Temp. Tables](#temp.-tables)
 -   [Vocab](#vocab)
 
 Advantages and Disadvantages
@@ -67,13 +69,13 @@ For example, `SELECT '10'::INTEGER;`
 Order of Operations
 -------------------
 
-1. `FROM`: Choose and `JOIN` tables to get base data
-1. `WHERE`: Filters the base data
-1. `GROUP BY`: Aggregates the base data into groups
-1. `HAVING`: Filters the aggregated data
-1. `SELECT`: Chooses the final data
-1. `ORDER BY:` Sorts the final data
-1. `Limit`: Limits the returned final data to a row count
+1.  `FROM`: Choose and `JOIN` tables to get base data
+2.  `WHERE`: Filters the base data
+3.  `GROUP BY`: Aggregates the base data into groups
+4.  `HAVING`: Filters the aggregated data
+5.  `SELECT`: Chooses the final data
+6.  `ORDER BY:` Sorts the final data
+7.  `Limit`: Limits the returned final data to a row count
 
 SQL Statements
 --------------
@@ -86,8 +88,8 @@ required), have *parameters* in between `()`, and end in `;`.
 
 ### The `SELECT` & `FROM` Statements
 
-The most common query. `SELECT` is used to select data `FROM` a table. For
-example,
+The most common query. `SELECT` is used to select data `FROM` a table.
+For example,
 
 ``` {.sql}
 SELECT var1_name, var2_name FROM table_name;
@@ -559,6 +561,9 @@ Some important SQL terminology.
     relational database management systems use SQL to access the
     database. Types: SQLite, MySQL, SQL Database
 -   **Schema**: defines the structure of a table or a database
--   **Structured Data**: Data organized neatly into columns and rows, where all values are primary SQL data types (e.g., `integer`, `varchar`, etc.). Thus, excludes data values that are themselves `rows` or `arrays` or `maps` datatypes.
+-   **Structured Data**: Data organized neatly into columns and rows,
+    where all values are primary SQL data types (e.g., `integer`,
+    `varchar`, etc.). Thus, excludes data values that are themselves
+    `rows` or `arrays` or `maps` datatypes.
 -   **Table (AKA Relation)**: a collection of data organized into rows
     and columns.
