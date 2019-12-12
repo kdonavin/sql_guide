@@ -64,6 +64,17 @@ Data Types
 Note that variables may be cast to new formats with the `::` operator.
 For example, `SELECT '10'::INTEGER;`
 
+Order of Operations
+-------------------
+
+1. `FROM`: Choose and `JOIN` tables to get base data
+1. `WHERE`: Filters the base data
+1. `GROUP BY`: Aggregates the base data into groups
+1. `HAVING`: Filters the aggregated data
+1. `SELECT`: Chooses the final data
+1. `ORDER BY:` Sorts the final data
+1. `Limit`: Limits the returned final data to a row count
+
 SQL Statements
 --------------
 
@@ -73,9 +84,9 @@ specific to flavor and should be Googled. SQL *statements* are made of
 *clauses*, written in CAPITALS by convention (not syntactically
 required), have *parameters* in between `()`, and end in `;`.
 
-### The `SELECT` Statement
+### The `SELECT` & `FROM` Statements
 
-The most common query. `SELECT` is used to select data from a table. For
+The most common query. `SELECT` is used to select data `FROM` a table. For
 example,
 
 ``` {.sql}
@@ -103,6 +114,11 @@ SELECT * FROM TABLE2
 
 Math may be conducted in line for variable in the select statement. For
 example, `SELECT proportion_sick*100 AS percent_sick FROM table_name;`.
+
+#### Subqueries
+
+You can make a subquery to substitute for table in a `FROM` statement.
+For example, `SELECT name FROM (SELECT col FROM ...)` and on.
 
 ### Filter Statements
 
@@ -384,23 +400,6 @@ More information regarding creating custom functions with PostgreSQL's
 `CREATE FUNCTION` command found
 [here](https://www.postgresql.org/docs/9.5/static/sql-createfunction.html).
 
-Subqueries
-----------
-
-You can make a subquery to substitute for table in a `FROM` statement.
-For example, `SELECT name FROM (SELECT col FROM ...)` and on.
-
-Order of Operations
--------------------
-
-1.  `SELECT [DISTINCT, AGG*] <table1.col1, ..., table1.coln, table2.col1, ...>`
-2.  `FROM <table1>`
-3.  `JOIN <table2> ON <table1.key_name> = <table2.other_key_name>`
-4.  `WHERE <table1.coli = val1> AND <table2.colj> = va2>`
-5.  `GROUP BY <table1.colk>`
-6.  `HAVING <AGG*(table1.col) = val>`
-7.  `ORDER BY <table1.col> ASC <table2.col> DESC`
-
 Operators
 ---------
 
@@ -527,7 +526,7 @@ A `.db` file may then be queried in a SQL environment.
 Vocab
 -----
 
-This should be migrated to another vocabulary list.
+Some important SQL terminology.
 
 -   **Child Table**: A table that references another's primary key,
     using a foreign key. E.g., a `sales_record` table, referencing a
@@ -560,6 +559,6 @@ This should be migrated to another vocabulary list.
     relational database management systems use SQL to access the
     database. Types: SQLite, MySQL, SQL Database
 -   **Schema**: defines the structure of a table or a database
--   **Structured Data**:
+-   **Structured Data**: Data organized neatly into columns and rows, where all values are primary SQL data types (e.g., `integer`, `varchar`, etc.). Thus, excludes data values that are themselves `rows` or `arrays` or `maps` datatypes.
 -   **Table (AKA Relation)**: a collection of data organized into rows
     and columns.
