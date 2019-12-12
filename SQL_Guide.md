@@ -14,11 +14,11 @@ Table of Contents
 -   [Order of Operations](#order-of-operations)
 -   [SQL Statements](#sql-statements)
     -   [The `SELECT` & `FROM`
-        Statements](#the-select-from-statements)
+        Statements](#the-select--from-statements)
     -   [Filter Statements](#filter-statements)
     -   [Update Statements](#update-statements)
     -   [The `JOIN` Statements](#the-join-statements)
--   [The `CREATE` & `DROP` Statements](#the-create-drop-statements)
+-   [The `CREATE` & `DROP` Statements](#the-create--drop-statements)
 -   [SQL Functions](#sql-functions)
     -   [Aggregate Functions](#aggregate-functions)
     -   [Date Functions](#date-functions)
