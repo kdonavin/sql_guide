@@ -388,7 +388,7 @@ Subqueries
 ----------
 
 You can make a subquery to substitute for table in a `FROM` statement.
-For example, `SELECT name FROM (subquery)`.
+For example, `SELECT name FROM (SELECT col FROM ...)` and on.
 
 Order of Operations
 -------------------
