@@ -75,7 +75,7 @@ Order of Operations
 4.  `HAVING`: Filters the aggregated data
 5.  `SELECT`: Chooses the final data
 6.  `ORDER BY:` Sorts the final data
-7.  `Limit`: Limits the returned final data to a row count
+7.  `LIMIT`: Limits the returned final data to a row count
 
 SQL Statements
 --------------
